@@ -1,5 +1,16 @@
 <script setup>
 import PFNavication from "./components/PFNavication.vue";
+
+import { onMounted } from 'vue'
+
+import { useAssetsStore } from '@/stores/assets'
+const assets = useAssetsStore()
+
+onMounted(() => {
+  assets.loadAssets();
+  this.timerId = setInterval(() => assets.loadAssets(), 5000);
+})
+
 </script>
 
 <template>
