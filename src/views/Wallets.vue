@@ -17,6 +17,12 @@ function getUrl(tokens_on_blockchain) {
             return "https://etherscan.io/address/"
         case "Polygon":
             return "https://polygonscan.com/address/"
+        case "Ethereum 2.0":
+            return "https://beaconscan.com/validator/"
+        case "Bitcoin":
+            return "https://blockchair.com/ru/bitcoin/address/"
+        case "Ripple":
+            return "https://xrpscan.com/account/"
         default:
             return false
     }
