@@ -6,16 +6,22 @@ import { onMounted } from 'vue'
 import { useAssetsStore } from '@/stores/assets'
 const assets = useAssetsStore()
 
+let assetLoaderInterval = null
+
 onMounted(() => {
   assets.loadAssets();
-  this.timerId = setInterval(() => assets.loadAssets(), 5000);
+  assetLoaderInterval = setInterval(() => assets.loadAssets(), 5000);
 })
-
 </script>
 
 <template>
   <v-app>
-    <v-app-bar></v-app-bar>
+    <v-app-bar>
+        <div class="logo">
+          <v-icon>mdi-chart-donut</v-icon>
+          <div class="logo-text">Potoforio</div>
+        </div>      
+    </v-app-bar>
     <PFNavication />
     <v-main>
       <v-container>
@@ -26,5 +32,18 @@ onMounted(() => {
 </template>
 
 <style>
+.logo {
+  font-size: 24px;
+  padding-left: 24px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
 
+.logo-text {
+  padding-left: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
 </style>

@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mdi/font": "5.9.55",
+    "@mdi/font": "^6.5.95",
     "@mdi/js": "^6.5.95",
     "axios": "^0.26.0",
     "pinia": "^2.0.11",
