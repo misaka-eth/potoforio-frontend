@@ -32,12 +32,24 @@ function getUrl(tokens_on_blockchain) {
     }
 }
 
+async function deleteWallet(walletId){
+    assets.delWallet(walletId).then((result) => assets.loadAssets())
+}
 </script>
 
 <template> 
     <v-container fill-height class="float-right">
+        <v-card>
+            <v-card-text>
+                <v-btn color="primary" :to="{path: '/wallets/add'}">Add wallet</v-btn>
+            </v-card-text>
+        </v-card>
         <v-card v-for="wallet in assets.assets" :key="wallet.id" elevation="1">
-            <v-card-title>{{ wallet.name }}</v-card-title>
+            <v-card-title>
+                <span style="padding-right: 10px;">{{ wallet.name }}</span>
+                
+                <a @click="deleteWallet(wallet.id)"><v-icon size="18px">mdi-delete-circle-outline</v-icon></a>
+            </v-card-title>
             <v-card-subtitle>{{ wallet.address }}</v-card-subtitle>
             <v-card-text>
                 <v-table>

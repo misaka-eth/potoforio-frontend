@@ -12,6 +12,15 @@ export const useAssetsStore = defineStore({
         async loadAssets() {
           axios.get('http://127.0.0.1:8000/api/wallet/?format=json').then((response) => this.assets = response.data)
         },
+        async addWallet(name, address) {
+          return await axios.post('http://127.0.0.1:8000/api/wallet/', {
+            "name": name,
+            "address": address
+          })
+        },
+        async delWallet(walletId) {
+          return await axios.delete(`http://127.0.0.1:8000/api/wallet/${walletId}`)
+        }
     },
     getters: {
       getTokensBalance(state){

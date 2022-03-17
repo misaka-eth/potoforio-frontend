@@ -25,13 +25,23 @@ onMounted(() => {
     <PFNavication />
     <v-main>
       <v-container>
-        <router-view></router-view>
+        <v-row justify="center">
+          <v-col justify="center">
+            <router-view></router-view>
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
+
   </v-app>
 </template>
 
 <style>
+html { 
+  /* TODO: Link backgroud color for theme */
+  background-color: rgb(18, 18, 18); 
+}
+
 .logo {
   font-size: 24px;
   padding-left: 24px;
