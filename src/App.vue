@@ -42,6 +42,11 @@ html {
   background-color: rgb(18, 18, 18); 
 }
 
+a {
+    color: rgb(var(--v-theme-on-background));
+    text-decoration: none;
+}
+
 .logo {
   font-size: 24px;
   padding-left: 24px;

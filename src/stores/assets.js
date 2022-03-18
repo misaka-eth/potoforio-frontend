@@ -20,6 +20,15 @@ export const useAssetsStore = defineStore({
         },
         async delWallet(walletId) {
           return await axios.delete(`http://127.0.0.1:8000/api/wallet/${walletId}`)
+        },
+        async getWallet(walletId) {
+          return await axios.get(`http://127.0.0.1:8000/api/wallet/${walletId}`)
+        },
+        async updateWallet(walletId, name, address) {
+          return await axios.put(`http://127.0.0.1:8000/api/wallet/${walletId}`, {
+            "name": name,
+            "address": address
+          })
         }
     },
     getters: {

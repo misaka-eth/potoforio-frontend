@@ -48,7 +48,8 @@ async function deleteWallet(walletId){
             <v-card-title>
                 <span style="padding-right: 10px;">{{ wallet.name }}</span>
                 
-                <a @click="deleteWallet(wallet.id)"><v-icon size="18px">mdi-delete-circle-outline</v-icon></a>
+                <a @click="deleteWallet(wallet.id)" style="padding-right: 4px;"><v-icon size="18px">mdi-delete-circle-outline</v-icon></a>
+                <router-link :to="{path: `/wallets/${wallet.id}/edit`}"><v-icon size="18px">mdi-circle-edit-outline</v-icon></router-link>
             </v-card-title>
             <v-card-subtitle>{{ wallet.address }}</v-card-subtitle>
             <v-card-text>

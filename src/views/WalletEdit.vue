@@ -5,7 +5,8 @@ import { useAssetsStore } from '@/stores/assets'
 import { useRouter, useRoute } from 'vue-router'
 
 const assets = useAssetsStore()
-
+const router = useRouter()
+const route = useRoute()
 
 const form = ref({
     name: {
@@ -18,12 +19,14 @@ const form = ref({
     }
 })
 
-let error_text = ref("")
+assets.getWallet(route.params.id).then(response => {
+    form.value.name.value = response.data.name
+    form.value.address.value = response.data.address
+})
 
-const router = useRouter()
 
-async function process_form () {
-    assets.addWallet(form.value.name.value, form.value.address.value).then((response) => {
+async function process_form() {
+    assets.updateWallet(route.params.id, form.value.name.value, form.value.address.value).then((response) => {
         assets.loadAssets()
         router.go(-1)
     }).catch(
@@ -39,10 +42,7 @@ async function process_form () {
 
 <template>
   <v-card class="mx-auto" max-width="600px">
-    <v-card-title>
-       <v-icon @click="$router.go(-1)" size="24px" style="margin-right: 10px;">mdi-arrow-left-circle</v-icon>
-        <span>Add new wallet</span> 
-    </v-card-title>
+    <v-card-title>Edit wallet with id{{ $route.params.id }}</v-card-title>
     <v-card-text class="text--primary">
         <v-form>
             <v-text-field label="Name" v-model="form.name.value" :error="!form.name.errorMessages" :error-messages="form.name.errorMessages" @focus="form.name.errorMessages=[]"></v-text-field>
