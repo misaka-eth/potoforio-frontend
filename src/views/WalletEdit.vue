@@ -42,7 +42,10 @@ async function process_form() {
 
 <template>
   <v-card class="mx-auto" max-width="600px">
-    <v-card-title>Edit wallet with id{{ $route.params.id }}</v-card-title>
+    <v-card-title>
+        <a><v-icon @click="$router.go(-1)" size="24px" style="margin-right: 10px;">mdi-arrow-left-circle</v-icon></a>
+        Edit wallet with id{{ $route.params.id }}
+    </v-card-title>
     <v-card-text class="text--primary">
         <v-form>
             <v-text-field label="Name" v-model="form.name.value" :error="!form.name.errorMessages" :error-messages="form.name.errorMessages" @focus="form.name.errorMessages=[]"></v-text-field>
@@ -54,5 +57,4 @@ async function process_form() {
 </template>
 
 <style scoped>
-
 </style>

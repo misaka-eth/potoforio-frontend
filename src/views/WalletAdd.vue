@@ -40,7 +40,7 @@ async function process_form () {
 <template>
   <v-card class="mx-auto" max-width="600px">
     <v-card-title>
-       <v-icon @click="$router.go(-1)" size="24px" style="margin-right: 10px;">mdi-arrow-left-circle</v-icon>
+        <a><v-icon @click="$router.go(-1)" size="24px" style="margin-right: 10px;">mdi-arrow-left-circle</v-icon></a>
         <span>Add new wallet</span> 
     </v-card-title>
     <v-card-text class="text--primary">
