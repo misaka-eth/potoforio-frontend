@@ -6,7 +6,9 @@ export const useAssetsStore = defineStore({
     id: 'assets',
     state: () => ({
       assets: [],
-      totalBalance: 0
+      totalBalance: 0,
+      tokens: [],
+      blockchains: []
     }),
     actions: {
         async loadAssets() {
@@ -29,6 +31,12 @@ export const useAssetsStore = defineStore({
             "name": name,
             "address": address
           })
+        },
+        async loadTokens() {
+          axios.get('http://127.0.0.1:8000/api/token/?format=json').then((response) => this.tokens = response.data)
+        },
+        async loadBlockchains() {
+          axios.get('http://127.0.0.1:8000/api/blockchain/?format=json').then((response) => this.blockchains = response.data)
         }
     },
     getters: {

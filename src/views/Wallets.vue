@@ -10,28 +10,6 @@ function calcBalance(tokens_on_blockchain) {
     return balance / Math.pow(10, decimals)
 }
 
-function getUrl(tokens_on_blockchain) {
-    const blockchain_name = tokens_on_blockchain.token_on_blockchain.blockchain.name
-    switch (blockchain_name){
-        case "Ethereum":
-            return "https://etherscan.io/address/"
-        case "Polygon":
-            return "https://polygonscan.com/address/"
-        case "Ethereum 2.0":
-            return "https://beaconscan.com/validator/"
-        case "Bitcoin":
-            return "https://blockchair.com/ru/bitcoin/address/"
-        case "Ripple":
-            return "https://xrpscan.com/account/"
-        case "Crypto.com":
-            return "https://crypto.org/explorer/account/"
-        case "Litecoin":
-            return "https://blockchair.com/ru/litecoin/address/"
-        default:
-            return false
-    }
-}
-
 async function deleteWallet(walletId){
     assets.delWallet(walletId).then((result) => assets.loadAssets())
 }
@@ -66,8 +44,8 @@ async function deleteWallet(walletId){
                     </thead>
                     <tbody>
                         <tr v-for="tokens_on_blockchain in wallet.tokens_on_blockchains" :key="tokens_on_blockchain.id">
-                            <td v-if="getUrl(tokens_on_blockchain)">
-                                <a :href="getUrl(tokens_on_blockchain) + wallet.address" target="_blank">
+                            <td v-if="tokens_on_blockchain.token_on_blockchain.blockchain.explorer">
+                                <a :href="tokens_on_blockchain.token_on_blockchain.blockchain.explorer + wallet.address" target="_blank">
                                     {{ tokens_on_blockchain.token_on_blockchain.blockchain.name }} 
                                     <v-icon>mdi-open-in-new</v-icon>
                                 </a>

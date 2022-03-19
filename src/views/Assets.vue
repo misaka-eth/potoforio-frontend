@@ -36,7 +36,7 @@ const assets = useAssetsStore()
           <td>Total balance</td>
           <td></td>
           <td></td>
-          <td>{{ Number((assets.getTotalBalance).toFixed()) }}$</td>
+          <td>{{ Number((assets.getTotalBalance).toFixed(2)) }}$</td>
         </tr>
       </tbody>
     </template>
