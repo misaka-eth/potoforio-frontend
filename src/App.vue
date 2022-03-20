@@ -1,26 +1,27 @@
 <script setup>
 import PFNavication from "./components/PFNavication.vue";
 
-import { onMounted } from 'vue'
+import { onMounted } from "vue";
 
-import { useAssetsStore } from '@/stores/assets'
-const assets = useAssetsStore()
+import { useAssetsStore } from "@/stores/assets";
+const assets = useAssetsStore();
 
-let assetLoaderInterval = null
+let assetLoaderInterval = null;
 
 onMounted(() => {
   assets.loadAssets();
+  // TODO: remove on unmount
   assetLoaderInterval = setInterval(() => assets.loadAssets(), 5000);
-})
+});
 </script>
 
 <template>
   <v-app>
     <v-app-bar>
-        <div class="logo">
-          <v-icon>mdi-chart-donut</v-icon>
-          <div class="logo-text">Potoforio</div>
-        </div>      
+      <div class="logo">
+        <v-icon>mdi-chart-donut</v-icon>
+        <div class="logo-text">Potoforio</div>
+      </div>
     </v-app-bar>
     <PFNavication />
     <v-main>
@@ -32,19 +33,18 @@ onMounted(() => {
         </v-row>
       </v-container>
     </v-main>
-
   </v-app>
 </template>
 
 <style>
-html { 
+html {
   /* TODO: Link backgroud color for theme */
-  background-color: rgb(18, 18, 18); 
+  background-color: rgb(18, 18, 18);
 }
 
 a {
-    color: rgb(var(--v-theme-on-background));
-    text-decoration: none;
+  color: rgb(var(--v-theme-on-background));
+  text-decoration: none;
 }
 
 .logo {
