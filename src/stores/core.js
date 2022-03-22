@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 
 import axios from 'axios'
 
-const API_ENDPOINT = 'http://127.0.0.1:8000/api'
+// const API_ENDPOINT = 'http://127.0.0.1:8000/api'
 // const API_ENDPOINT = 'http://192.168.31.200:8000/api'
+const API_ENDPOINT = 'http://potoforio:8000/api'
 
 export const useCoreStore = defineStore({
   id: 'core',
