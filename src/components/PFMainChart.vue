@@ -16,15 +16,20 @@ onMounted(() => {
       type: "line",
       data: {
         datasets: [
-             { 
-                label: 'Total balance in USD',
-                data: data.data,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }
+          {
+            label: "Total balance in USD",
+            data: data.data,
+            borderColor: "rgb(75, 192, 192)",
+            fill: true,
+          },
         ],
       },
       options: {
+        elements: {
+          point: {
+            radius: 0,
+          },
+        },
         parsing: {
           xAxisKey: "timestamp",
           yAxisKey: "balance",
@@ -34,7 +39,17 @@ onMounted(() => {
             type: "time",
             time: {
               format: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-              tooltipFormat: "ll",
+              tooltipFormat: "yyyy-MM-dd HH:mm:ss",
+              unit: "day",
+              unitStepSize: 1,
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+              color: "rgb(255, 255, 255)",
             },
           },
         },
@@ -47,7 +62,7 @@ onMounted(() => {
 <template>
   <v-card>
     <v-card-text>
-        <canvas id="myChart" height="100"></canvas>
+      <canvas id="myChart" height="100"></canvas>
     </v-card-text>
   </v-card>
 </template>
