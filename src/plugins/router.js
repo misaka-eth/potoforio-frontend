@@ -1,17 +1,17 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Assets from "@/views/Assets.vue";
+import Dashboard from "@/views/Dashboard.vue";
 import Wallets from "@/views/Wallets.vue";
 import WalletAdd from "@/views/WalletAdd.vue";
 import WalletEdit from "@/views/WalletEdit.vue";
-import Tokens from "@/views/Tokens.vue";
+import Assets from "@/views/Assets.vue";
 import Blockchains from "@/views/Blockchains.vue";
 
 
 const routes = [
   {
     path: "/",
-    name: "Assets",
-    component: Assets
+    name: "Dashboard",
+    component: Dashboard
   },
   {
     path: "/wallets",
@@ -29,9 +29,9 @@ const routes = [
     component: WalletEdit
   },
   { 
-    path: '/tokens',
-    name: "Tokens",
-    component: Tokens
+    path: '/assets',
+    name: "Assets",
+    component: Assets
   },
   { 
     path: '/blockchains',

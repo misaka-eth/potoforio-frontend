@@ -1,15 +1,15 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { Chart, registerables } from "chart.js";
-Chart.register(...registerables);
-import { storeToRefs } from "pinia";
-import { useAssetsStore } from "@/stores/assets";
+import { useCoreStore } from "@/stores/core";
 import "chartjs-adapter-moment";
 
-const assets = useAssetsStore();
+Chart.register(...registerables);
+
+const coreStore = useCoreStore();
 
 onMounted(() => {
-  assets.loadHistoryChart().then((data) => {
+  coreStore.loadHistoryChart().then((data) => {
     const ctx = document.getElementById("myChart").getContext("2d");
 
     const chart = new Chart(ctx, {

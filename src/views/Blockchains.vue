@@ -1,18 +1,18 @@
 <script setup>
-import { useAssetsStore } from "@/stores/assets";
+import { useCoreStore } from "@/stores/core";
 import { onMounted } from "vue";
 
-const assets = useAssetsStore();
+const coreStore = useCoreStore();
 
 onMounted(() => {
-  assets.loadBlockchains();
+  coreStore.loadBlockchains();
 });
 </script>
 
 <template>
   <v-container fill-height class="float-right">
     <v-card
-      v-for="blockchain in assets.blockchains"
+      v-for="blockchain in coreStore.blockchains"
       :key="blockchain.id"
       elevation="1"
     >

@@ -3,8 +3,8 @@
     <v-list nav>
       <v-list-item
         prepend-icon="mdi-view-dashboard"
-        title="Assets"
-        value="assets"
+        title="Dashboard"
+        value="dashboard"
         :to="{ path: '/' }"
       ></v-list-item>
       <v-list-item
@@ -15,9 +15,9 @@
       ></v-list-item>
       <v-list-item
         prepend-icon="mdi-circle-multiple-outline"
-        title="Tokens"
-        value="tokens"
-        :to="{ path: '/tokens' }"
+        title="Assets"
+        value="Assets"
+        :to="{ path: '/assets' }"
       ></v-list-item>
       <v-list-item
         prepend-icon="mdi-link"

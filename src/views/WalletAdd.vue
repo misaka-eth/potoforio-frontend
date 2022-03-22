@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import { useAssetsStore } from "@/stores/assets";
+import { useCoreStore } from "@/stores/core";
 import { useRouter, useRoute } from "vue-router";
 
-const assets = useAssetsStore();
+const coreStore = useCoreStore();
 
 const form = ref({
   name: {
@@ -21,10 +21,10 @@ let error_text = ref("");
 const router = useRouter();
 
 async function process_form() {
-  assets
+  coreStore
     .addWallet(form.value.name.value, form.value.address.value)
     .then((response) => {
-      assets.loadAssets();
+      coreStore.loadWallets();
       router.go(-1);
     })
     .catch((error) => {

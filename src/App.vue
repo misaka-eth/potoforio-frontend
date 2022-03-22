@@ -3,15 +3,13 @@ import PFNavication from "./components/PFNavication.vue";
 
 import { onMounted } from "vue";
 
-import { useAssetsStore } from "@/stores/assets";
-const assets = useAssetsStore();
-
-let assetLoaderInterval = null;
+import { useCoreStore } from "@/stores/core";
+const coreStore = useCoreStore();
 
 onMounted(() => {
-  assets.loadAssets();
+  coreStore.loadWallets();
   // TODO: remove on unmount
-  assetLoaderInterval = setInterval(() => assets.loadAssets(), 5000);
+  let walletLoaderInterval = setInterval(() => coreStore.loadAssets(), 5000);
 });
 </script>
 
