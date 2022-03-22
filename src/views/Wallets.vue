@@ -10,7 +10,7 @@ function calcBalance(assets_on_blockchain) {
 }
 
 async function deleteWallet(walletId) {
-  coreStore.delWallet(walletId).then((result) => coreStore.loadWallet());
+  coreStore.delWallet(walletId).then((result) => coreStore.loadWallets());
 }
 </script>
 
