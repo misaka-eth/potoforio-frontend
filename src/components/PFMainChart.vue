@@ -10,6 +10,35 @@ const coreStore = useCoreStore();
 
 onMounted(() => {
   coreStore.loadHistoryChart().then((data) => {
+
+    const labels = coreStore.getAssetsBalance.map(el => el.name)
+    const values = coreStore.getAssetsBalance.map(el => el.balance_with_decimals * el.last_price)
+
+    new Chart(document.getElementById("doughnut-chart").getContext("2d"), {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Balance distribution ($)",
+            backgroundColor: [
+              "#808080",
+              "#909090",
+              "#303030",
+              "#404040",
+              "#555555",
+              "#606060",
+              "#707070",
+            ],
+            data: values,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+      },
+    });
+
     const ctx = document.getElementById("myChart").getContext("2d");
 
     const chart = new Chart(ctx, {
@@ -21,7 +50,7 @@ onMounted(() => {
             data: data.data,
             borderColor: "rgb(75, 192, 192)",
             fill: true,
-            tension: 1
+            tension: 1,
           },
         ],
       },
@@ -63,7 +92,15 @@ onMounted(() => {
 <template>
   <v-card>
     <v-card-text>
-      <canvas id="myChart" height="100"></canvas>
+      <v-row>
+        <v-col cols="8"><canvas id="myChart"></canvas></v-col>
+        <v-col cols="4"><canvas id="doughnut-chart" width="500" height="500"></canvas></v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
+  <v-card>
+    <v-card-text>
+      
     </v-card-text>
   </v-card>
 </template>
