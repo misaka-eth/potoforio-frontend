@@ -21,6 +21,7 @@ onMounted(() => {
             data: data.data,
             borderColor: "rgb(75, 192, 192)",
             fill: true,
+            tension: 1
           },
         ],
       },
