@@ -10,25 +10,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-container fill-height class="float-right">
-    <v-card
-      v-for="blockchain in coreStore.blockchains"
-      :key="blockchain.id"
-      elevation="1"
-    >
-      <v-card-title>
-        <span styFle="padding-right: 10px;">{{ blockchain.name }}</span>
-      </v-card-title>
-      <v-card-subtitle>Explorer: {{ blockchain.explorer }}</v-card-subtitle>
-      <v-card-text> </v-card-text>
-    </v-card>
-  </v-container>
+  <v-row v-for="blockchain in coreStore.blockchains" :key="blockchain.id">
+    <v-col>
+      <v-card elevation="1">
+        <v-card-title>
+          <span styFle="padding-right: 10px;">{{ blockchain.name }}</span>
+        </v-card-title>
+        <v-card-subtitle>Explorer: {{ blockchain.explorer }}</v-card-subtitle>
+        <v-card-text> </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped>
-.v-card {
-  margin: 10px;
-}
 
 .streach {
   width: 50%;

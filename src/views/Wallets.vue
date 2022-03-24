@@ -15,112 +15,119 @@ async function deleteWallet(walletId) {
 </script>
 
 <template>
-  <v-container fill-height class="float-right">
-    <v-card>
-      <v-card-text>
-        <v-btn color="primary" :to="{ path: '/wallets/add' }">Add wallet</v-btn>
-      </v-card-text>
-    </v-card>
-    <v-card v-for="wallet in coreStore.wallets" :key="wallet.id" elevation="1">
-      <v-card-title>
-        <span style="padding-right: 10px">{{ wallet.name }}</span>
+  <v-row>
+    <v-col>
+      <v-card>
+        <v-card-text>
+          <v-btn color="primary" :to="{ path: '/wallets/add' }"
+            >Add wallet</v-btn
+          >
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
+  <v-row v-for="wallet in coreStore.wallets" :key="wallet.id">
+    <v-col>
+      <v-card elevation="1">
+        <v-card-title>
+          <span style="padding-right: 10px">{{ wallet.name }}</span>
 
-        <a @click="deleteWallet(wallet.id)" style="padding-right: 4px"
-          ><v-icon size="18px">mdi-delete-circle-outline</v-icon></a
-        >
-        <router-link :to="{ path: `/wallets/${wallet.id}/edit` }"
-          ><v-icon size="18px">mdi-circle-edit-outline</v-icon></router-link
-        >
-      </v-card-title>
-      <v-card-subtitle>{{ wallet.address }}</v-card-subtitle>
-      <v-card-text>
-        <v-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="streach">Blockchain</th>
-                <th class="streach">Asset</th>
-                <th class="streach">Balance</th>
-                <th class="streach">Price</th>
-                <th class="streach">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="assets_on_blockchain in wallet.assets_on_blockchains"
-                :key="assets_on_blockchain.id"
-              >
-                <td
-                  v-if="
-                    assets_on_blockchain.asset_on_blockchain.blockchain.explorer
-                  "
+          <a @click="deleteWallet(wallet.id)" style="padding-right: 4px"
+            ><v-icon size="18px">mdi-delete-circle-outline</v-icon></a
+          >
+          <router-link :to="{ path: `/wallets/${wallet.id}/edit` }"
+            ><v-icon size="18px">mdi-circle-edit-outline</v-icon></router-link
+          >
+        </v-card-title>
+        <v-card-subtitle>{{ wallet.address }}</v-card-subtitle>
+        <v-card-text>
+          <v-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="streach">Blockchain</th>
+                  <th class="streach">Asset</th>
+                  <th class="streach">Balance</th>
+                  <th class="streach">Price</th>
+                  <th class="streach">Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="assets_on_blockchain in wallet.assets_on_blockchains"
+                  :key="assets_on_blockchain.id"
                 >
-                  <a
-                    :href="
+                  <td
+                    v-if="
                       assets_on_blockchain.asset_on_blockchain.blockchain
-                        .explorer + wallet.address
+                        .explorer
                     "
-                    target="_blank"
                   >
+                    <a
+                      :href="
+                        assets_on_blockchain.asset_on_blockchain.blockchain
+                          .explorer + wallet.address
+                      "
+                      target="_blank"
+                    >
+                      {{
+                        assets_on_blockchain.asset_on_blockchain.blockchain.name
+                      }}
+                      <v-icon>mdi-open-in-new</v-icon>
+                    </a>
+                  </td>
+                  <td v-else>
                     {{
                       assets_on_blockchain.asset_on_blockchain.blockchain.name
                     }}
-                    <v-icon>mdi-open-in-new</v-icon>
-                  </a>
-                </td>
-                <td v-else>
-                  {{ assets_on_blockchain.asset_on_blockchain.blockchain.name }}
-                </td>
-                <td>
-                  {{ assets_on_blockchain.asset_on_blockchain.asset.name }}
-                </td>
-                <td>
-                  {{ calcBalance(assets_on_blockchain) }}
-                  {{ assets_on_blockchain.asset_on_blockchain.asset.ticker }}
+                  </td>
+                  <td>
+                    {{ assets_on_blockchain.asset_on_blockchain.asset.name }}
+                  </td>
+                  <td>
+                    {{ calcBalance(assets_on_blockchain) }}
+                    {{ assets_on_blockchain.asset_on_blockchain.asset.ticker }}
 
-                  <div
-                    v-if="assets_on_blockchain.balance.manual"
-                    class="tooltip"
-                  >
-                    <v-icon>mdi-circle-edit-outline</v-icon>
-                    <span class="tooltiptext">Manualy added</span>
-                  </div>
+                    <div
+                      v-if="assets_on_blockchain.balance.manual"
+                      class="tooltip"
+                    >
+                      <v-icon>mdi-circle-edit-outline</v-icon>
+                      <span class="tooltiptext">Manualy added</span>
+                    </div>
 
-                  <div v-else class="tooltip">
-                    <v-icon>mdi-cube-scan</v-icon>
-                    <span class="tooltiptext">Automaticaly scanned</span>
-                  </div>
-                </td>
-                <td>
-                  {{
-                    assets_on_blockchain.asset_on_blockchain.asset.last_price
-                  }}$
-                </td>
-                <td>
-                  {{
-                    Number(
-                      (
-                        calcBalance(assets_on_blockchain) *
-                        assets_on_blockchain.asset_on_blockchain.asset
-                          .last_price
-                      ).toFixed(2)
-                    )
-                  }}$
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-table>
-      </v-card-text>
-    </v-card>
-  </v-container>
+                    <div v-else class="tooltip">
+                      <v-icon>mdi-cube-scan</v-icon>
+                      <span class="tooltiptext">Automaticaly scanned</span>
+                    </div>
+                  </td>
+                  <td>
+                    {{
+                      assets_on_blockchain.asset_on_blockchain.asset.last_price
+                    }}$
+                  </td>
+                  <td>
+                    {{
+                      Number(
+                        (
+                          calcBalance(assets_on_blockchain) *
+                          assets_on_blockchain.asset_on_blockchain.asset
+                            .last_price
+                        ).toFixed(2)
+                      )
+                    }}$
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-table>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped>
-.v-card {
-  margin: 10px;
-}
-
 .streach {
   width: 20%;
 }

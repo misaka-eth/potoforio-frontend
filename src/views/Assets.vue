@@ -10,48 +10,46 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-container fill-height class="float-right">
-    <v-card v-for="asset in coreStore.assets" :key="asset.id" elevation="1">
-      <v-card-title>
-        <span style="padding-right: 10px">{{ asset.name }}</span>
-      </v-card-title>
-      <v-card-subtitle
-        >{{ asset.ticker }} | Decimals: {{ asset.decimals }}</v-card-subtitle
-      >
-      <v-card-text>
-        <v-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="streach">Blockchain name</th>
-                <th class="streach">Address</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="assets_on_blockchain in asset.assets_on_blockchains"
-                :key="assets_on_blockchain.id"
-              >
-                <td>
-                  {{ assets_on_blockchain.blockchain.name }}
-                </td>
-                <td>
-                  {{ assets_on_blockchain.address || "Native" }}
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-table>
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <v-row v-for="asset in coreStore.assets" :key="asset.id" >
+    <v-col>
+      <v-card elevation="1">
+        <v-card-title>
+          <span style="padding-right: 10px">{{ asset.name }}</span>
+        </v-card-title>
+        <v-card-subtitle
+          >{{ asset.ticker }} | Decimals: {{ asset.decimals }}</v-card-subtitle
+        >
+        <v-card-text>
+          <v-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="streach">Blockchain name</th>
+                  <th class="streach">Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="assets_on_blockchain in asset.assets_on_blockchains"
+                  :key="assets_on_blockchain.id"
+                >
+                  <td>
+                    {{ assets_on_blockchain.blockchain.name }}
+                  </td>
+                  <td>
+                    {{ assets_on_blockchain.address || "Native" }}
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-table>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <style scoped>
-.v-card {
-  margin: 10px;
-}
-
 .streach {
   width: 50%;
 }
