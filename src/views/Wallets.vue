@@ -19,9 +19,9 @@ async function deleteWallet(walletId) {
     <v-col>
       <v-card>
         <v-card-text>
-          <v-btn color="primary" :to="{ path: '/wallets/add' }"
-            >Add wallet</v-btn
-          >
+          <v-btn color="primary" :to="{ path: '/wallets/add' }">
+            Add wallet
+          </v-btn>
         </v-card-text>
       </v-card>
     </v-col>

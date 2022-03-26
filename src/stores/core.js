@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 
 import axios from 'axios'
 
-// const API_ENDPOINT = 'http://127.0.0.1:8000/api'
-const API_ENDPOINT = 'http://192.168.31.200:8000/api'
+const API_ENDPOINT = 'http://127.0.0.1:8000/api'
+// const API_ENDPOINT = 'http://192.168.31.200:8000/api'
 
 
 export const useCoreStore = defineStore({
@@ -13,6 +13,7 @@ export const useCoreStore = defineStore({
     assets: [],
     blockchains: [],
     history: [],
+    providers: [],
     totalBalance: 0
   }),
   actions: {
@@ -48,7 +49,10 @@ export const useCoreStore = defineStore({
     },
     async loadHistoryChart() {
       return axios.get(`${API_ENDPOINT}/history/?format=json`)
-    }
+    },
+    async loadProviders() {
+      axios.get(`${API_ENDPOINT}/providers/?format=json`).then((response) => this.providers = response.data)
+    },
   },
   getters: {
     getAssetsBalance(state) {

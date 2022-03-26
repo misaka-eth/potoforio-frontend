@@ -5,7 +5,7 @@ import WalletAdd from "@/views/WalletAdd.vue";
 import WalletEdit from "@/views/WalletEdit.vue";
 import Assets from "@/views/Assets.vue";
 import Blockchains from "@/views/Blockchains.vue";
-
+import Providers from "@/views/Providers.vue";
 
 const routes = [
   {
@@ -37,6 +37,11 @@ const routes = [
     path: '/blockchains',
     name: "Blockchains",
     component: Blockchains
+  },
+  { 
+    path: '/providers',
+    name: "Providers",
+    component: Providers
   },
 ];
 

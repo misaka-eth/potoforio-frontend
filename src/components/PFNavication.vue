@@ -25,6 +25,12 @@
         value="blockchains"
         :to="{ path: '/blockchains' }"
       ></v-list-item>
+      <v-list-item
+        prepend-icon="mdi-cube-scan"
+        title="Providers"
+        value="providers"
+        :to="{ path: '/providers' }"
+      ></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
