@@ -18,7 +18,7 @@ export const useCoreStore = defineStore({
   }),
   actions: {
     async loadWallets() {
-      axios.get(`${API_ENDPOINT}/wallet/?format=json`).then((response) => this.wallets = response.data)
+      axios.get(`${API_ENDPOINT}/wallet/?format=json`).then((response) => this.wallets = response.data).catch((err) => console.log(err))
     },
     async addWallet(name, address) {
       return await axios.post(`${API_ENDPOINT}/wallet/`, {
@@ -47,9 +47,6 @@ export const useCoreStore = defineStore({
     async loadHistory() {
       axios.get(`${API_ENDPOINT}/history/?format=json`).then((response) => this.history = response.data)
     },
-    async loadHistoryChart() {
-      return axios.get(`${API_ENDPOINT}/history/?format=json`)
-    },
     async loadProviders() {
       axios.get(`${API_ENDPOINT}/providers/?format=json`).then((response) => this.providers = response.data)
     },
@@ -74,6 +71,13 @@ export const useCoreStore = defineStore({
     },
     getTotalBalance(state) {
       return this.getAssetsBalance.reduce((sum, current) => sum + current.last_price * current.balance_with_decimals, 0)
+    },
+    getDistributionData(state) {
+      const labels = state.getAssetsBalance.map((el) => el.name)
+      const data = state.getAssetsBalance.map(
+        (el) => el.balance_with_decimals * el.last_price
+      );
+      return {labels, data}
     }
   }
 })
