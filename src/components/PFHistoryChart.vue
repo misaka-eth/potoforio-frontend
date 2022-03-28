@@ -23,10 +23,10 @@ export default defineComponent({
           radius: 0,
         },
       },
-      parsing: {
-        xAxisKey: "timestamp",
-        yAxisKey: "balance",
-      },
+      // parsing: {
+      //   xAxisKey: "timestamp",
+      //   yAxisKey: "balance",
+      // },
       scales: {
         x: {
           type: "time",
@@ -49,9 +49,10 @@ export default defineComponent({
     };
 
     const historyData = computed(() => ({
+      labels: coreStore.history.timestamps,
       datasets: [
         {
-          data: coreStore.history,
+          data: coreStore.history.balances,
           label: "Total balance in USD",
           borderColor: "rgb(75, 192, 192)",
           fill: true,
