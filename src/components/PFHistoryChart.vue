@@ -31,8 +31,8 @@ export default defineComponent({
         x: {
           type: "time",
           time: {
-            format: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-            tooltipFormat: "yyyy-MM-dd HH:mm:ss",
+            format: "yyyy-MM-DD'T'HH:mm:ss.SSS'Z'",
+            tooltipFormat: "yyyy-MM-DD HH:mm:ss",
             unit: "day",
             unitStepSize: 1,
           },
