@@ -64,7 +64,7 @@ export default defineComponent({
   },
   mounted: function () {
     this.coreStore.loadHistory();
-    setInterval(() => this.coreStore.loadHistory(), 60000);
+    setInterval(() => this.coreStore.updateHistory(), 5000);
   },
 });
 </script>

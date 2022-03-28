@@ -13,6 +13,7 @@ export const useCoreStore = defineStore({
     assets: [],
     blockchains: [],
     history: [],
+    history_settings: 'week',
     providers: [],
     totalBalance: 0
   }),
@@ -44,8 +45,32 @@ export const useCoreStore = defineStore({
     async loadBlockchains() {
       axios.get(`${API_ENDPOINT}/blockchain/?format=json`).then((response) => this.blockchains = response.data)
     },
+    setHistorySetting(setting){
+      this.history_settings = setting;
+      this.loadHistory()
+    },
     async loadHistory() {
-      axios.get(`${API_ENDPOINT}/history/?format=json`).then((response) => this.history = response.data)
+      const relatives = {
+        'all':  Date.now(),
+        'month': 1000 * 60 * 60 * 24 * 30 ,
+        'week': 1000 * 60 * 60 * 24 * 7,
+        'day':  1000 * 60 * 60 * 24
+      }
+      const params = {
+        'format': 'json',
+        'start_timestamp': Date.now() - relatives[this.history_settings]
+      }
+      axios.get(`${API_ENDPOINT}/history/`, { params: params }).then((response) => this.history = response.data)
+    },
+    async updateHistory() {
+      if (!this.history) return this.loadHistory()
+
+      const start_timestamp = new Date(this.history[this.history.length-1].timestamp)
+      const params = {
+        'format': 'json',
+        'start_timestamp': start_timestamp.getTime()
+      }
+      axios.get(`${API_ENDPOINT}/history/`, { params: params }).then((response) => this.history = this.history.concat(response.data.slice(1)))
     },
     async loadProviders() {
       axios.get(`${API_ENDPOINT}/providers/?format=json`).then((response) => this.providers = response.data)
