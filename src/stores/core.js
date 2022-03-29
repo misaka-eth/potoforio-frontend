@@ -13,7 +13,7 @@ export const useCoreStore = defineStore({
     assets: [],
     blockchains: [],
     history: [],
-    history_settings: 'week',
+    history_settings: localStorage.history_settings || 'week',
     providers: [],
     totalBalance: 0
   }),
@@ -47,6 +47,7 @@ export const useCoreStore = defineStore({
     },
     setHistorySetting(setting){
       this.history_settings = setting;
+      localStorage.history_settings = setting;
       this.loadHistory()
     },
     async loadHistory() {
