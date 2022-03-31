@@ -55,7 +55,7 @@ async function deleteWallet(walletId) {
               <tbody>
                 <tr
                   v-for="assets_on_blockchain in wallet.assets_on_blockchains"
-                  :key="assets_on_blockchain.id"
+                  :key="assets_on_blockchain.id" v-show="calcBalance(assets_on_blockchain)>0"
                 >
                   <td
                     v-if="
