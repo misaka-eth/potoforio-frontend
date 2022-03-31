@@ -100,7 +100,7 @@ export const useCoreStore = defineStore({
       })
 
       assets = Object.values(assets)
-      assets.sort((a, b) => b.last_price - a.last_price);
+      assets.sort((a, b) => (b.last_price * b.balance_with_decimals) - (a.last_price * a.balance_with_decimals));
       return assets
     },
     getTotalBalance(state) {
