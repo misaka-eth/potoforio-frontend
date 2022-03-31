@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 
 import axios from 'axios'
 
-// const API_ENDPOINT = 'http://127.0.0.1:8000/api'
-const API_ENDPOINT = 'http://192.168.31.200:8000/api'
+const API_ENDPOINT = 'http://127.0.0.1:8000/api'
+// const API_ENDPOINT = 'http://192.168.31.200:8000/api'
 
 
 export const useCoreStore = defineStore({
@@ -15,6 +15,7 @@ export const useCoreStore = defineStore({
     history: [],
     history_settings: localStorage.history_settings || 'week',
     providers: [],
+    nfts: [],
     totalBalance: 0
   }),
   actions: {
@@ -80,6 +81,9 @@ export const useCoreStore = defineStore({
     async loadProviders() {
       axios.get(`${API_ENDPOINT}/providers/?format=json`).then((response) => this.providers = response.data)
     },
+    async loadNFTs() {
+      axios.get(`${API_ENDPOINT}/nfts/?format=json`).then((response) => this.nfts = response.data)
+    },
   },
   getters: {
     getAssetsBalance(state) {
@@ -108,6 +112,16 @@ export const useCoreStore = defineStore({
         (el) => el.balance_with_decimals * el.last_price
       );
       return {labels, data}
+    },
+    getNFTCategories(state) {
+      let categories = {};
+      state.nfts.forEach((nft) => {
+        categories[nft.category.category_id] = categories[nft.category.category_id] || nft.category
+        categories[nft.category.category_id]['count'] = categories[nft.category.category_id]['count'] || 0
+        categories[nft.category.category_id]['count'] += 1
+      })
+      categories = Object.values(categories)
+      return categories
     }
   }
 })

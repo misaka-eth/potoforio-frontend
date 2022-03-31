@@ -6,6 +6,7 @@ import WalletEdit from "@/views/WalletEdit.vue";
 import Assets from "@/views/Assets.vue";
 import Blockchains from "@/views/Blockchains.vue";
 import Providers from "@/views/Providers.vue";
+import NFTs from "@/views/NFTs.vue";
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: "Providers",
     component: Providers
   },
+  { 
+    path: '/NFTs',
+    name: "NFTs",
+    component: NFTs
+  }
 ];
 
 const router = createRouter({

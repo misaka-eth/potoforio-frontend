@@ -20,6 +20,12 @@
         :to="{ path: '/assets' }"
       ></v-list-item>
       <v-list-item
+        prepend-icon="mdi-image"
+        title="NFTs"
+        value="NFTs"
+        :to="{ path: '/NFTs' }"
+      ></v-list-item>
+      <v-list-item
         prepend-icon="mdi-link"
         title="Blockchains"
         value="blockchains"
