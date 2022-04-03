@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 
 import axios from 'axios'
 
-// const API_ENDPOINT = 'http://127.0.0.1:8000/api'
-const API_ENDPOINT = 'http://192.168.31.200:8000/api' // TODO: configure this properly
+const http = axios.create({
+  baseURL: '/api/',
+});
 
 
 export const useCoreStore = defineStore({
@@ -20,69 +21,69 @@ export const useCoreStore = defineStore({
   }),
   actions: {
     async loadWallets() {
-      axios.get(`${API_ENDPOINT}/wallet/?format=json`).then((response) => this.wallets = response.data).catch((err) => console.log(err))
+      http.get('wallet/').then((response) => this.wallets = response.data).catch((err) => console.log(err))
     },
     async addWallet(name, address) {
-      return await axios.post(`${API_ENDPOINT}/wallet/`, {
+      return await http.post('wallet/', {
         "name": name,
         "address": address
       })
     },
     async delWallet(walletId) {
-      return await axios.delete(`${API_ENDPOINT}/wallet/${walletId}`)
+      return await http.delete(`wallet/${walletId}`)
     },
     async getWallet(walletId) {
-      return await axios.get(`${API_ENDPOINT}/wallet/${walletId}`)
+      return await http.get(`wallet/${walletId}`)
     },
     async updateWallet(walletId, name, address) {
-      return await axios.put(`${API_ENDPOINT}/wallet/${walletId}`, {
+      return await http.put(`wallet/${walletId}`, {
         "name": name,
         "address": address
       })
     },
     async loadAssets() {
-      axios.get(`${API_ENDPOINT}/assets/?format=json`).then((response) => this.assets = response.data)
+      http.get(`assets/`).then((response) => this.assets = response.data)
     },
     async loadBlockchains() {
-      axios.get(`${API_ENDPOINT}/blockchain/?format=json`).then((response) => this.blockchains = response.data)
+      http.get(`blockchain/`).then((response) => this.blockchains = response.data)
     },
-    setHistorySetting(setting){
+    setHistorySetting(setting) {
       this.history_settings = setting;
       localStorage.history_settings = setting;
       this.loadHistory()
     },
     async loadHistory() {
       const relatives = {
-        'all':  Date.now(),
-        'month': 1000 * 60 * 60 * 24 * 30 ,
+        'all': Date.now(),
+        'month': 1000 * 60 * 60 * 24 * 30,
         'week': 1000 * 60 * 60 * 24 * 7,
-        'day':  1000 * 60 * 60 * 24
+        'day': 1000 * 60 * 60 * 24
       }
       const params = {
         'format': 'json',
         'start_timestamp': Date.now() - relatives[this.history_settings]
       }
-      axios.get(`${API_ENDPOINT}/history/`, { params: params }).then((response) => this.history = response.data)
+      http.get(`history/`, { params: params }).then((response) => this.history = response.data)
     },
     async updateHistory() {
       if (!this.history) return this.loadHistory()
 
-      const start_timestamp = this.history.timestamps[this.history.timestamps.length-1]
+      const start_timestamp = this.history.timestamps[this.history.timestamps.length - 1]
       const params = {
         'format': 'json',
         'start_timestamp': start_timestamp
       }
-      axios.get(`${API_ENDPOINT}/history/`, { params: params }).then((response) => {
+      http.get(`history/`, { params: params }).then((response) => {
         this.history.balances = this.history.balances.concat(response.data.balances.slice(1))
         this.history.timestamps = this.history.timestamps.concat(response.data.timestamps.slice(1))
       })
-      
+
     },
     async loadProviders() {
-      axios.get(`${API_ENDPOINT}/providers/?format=json`).then((response) => this.providers = response.data)
+      http.get(`providers/?format=json`).then((response) => this.providers = response.data)
     },
     async loadNFTs() {
-      axios.get(`${API_ENDPOINT}/nfts/?format=json`).then((response) => this.nfts = response.data)
+      http.get(`nfts/?format=json`).then((response) => this.nfts = response.data)
     },
   },
   getters: {
@@ -111,7 +112,7 @@ export const useCoreStore = defineStore({
       const data = state.getAssetsBalance.map(
         (el) => el.balance_with_decimals * el.last_price
       );
-      return {labels, data}
+      return { labels, data }
     },
     getNFTCategories(state) {
       let categories = {};
