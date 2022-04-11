@@ -16,7 +16,18 @@ export const useCoreStore = defineStore({
     history: [],
     history_settings: localStorage.history_settings || 'week',
     providers: [],
-    nfts: [],
+    nfts: {
+      data: [],
+      statistic: {
+        count: 0
+      },
+      pagination: {
+        current: 0,
+        size: 50
+      },
+      search: "",
+      last_search: ""
+    },
     totalBalance: 0
   }),
   actions: {
@@ -83,7 +94,25 @@ export const useCoreStore = defineStore({
       http.get(`providers/?format=json`).then((response) => this.providers = response.data)
     },
     async loadNFTs() {
-      http.get(`nfts/?format=json`).then((response) => this.nfts = response.data)
+      // Remove current list if it's new search
+      if (this.nfts.last_search != this.nfts.search) {
+        this.nfts.pagination.current = 0
+        this.nfts.data = []
+      }
+
+      http.get(`nfts/`, {
+        params: {
+          page: this.nfts.pagination.current + 1,
+          page_size: this.nfts.pagination.size,
+          search: this.nfts.search
+        }
+      }).then((response) => {
+        this.nfts.data = this.nfts.data.concat(response.data.results)
+        this.nfts.statistic.count = response.data.count
+        this.nfts.pagination.current += 1
+        this.nfts.last_search = this.nfts.search
+      })
+
     },
   },
   getters: {
