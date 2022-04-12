@@ -69,11 +69,13 @@ window.onscroll = () => {
                   flat
                   theme="dark"
                 >
-                  <template v-slot:prepend>
-                    <v-card>
-                      {{ nft.blockchain.name }}
-                    </v-card>
-                  </template>
+                  <v-card
+                    elevation="8"
+                    style="padding-left: 5px; padding-right: 5px"
+                    color="primary"
+                  >
+                    {{ nft.blockchain.name }}
+                  </v-card>
                 </v-app-bar>
               </v-layout>
             </v-img>
