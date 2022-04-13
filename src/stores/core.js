@@ -6,6 +6,18 @@ const http = axios.create({
   baseURL: '/api/',
 });
 
+const RELATIVES = {
+  'all': Date.now(),
+  'month': 1000 * 60 * 60 * 24 * 30,
+  'week': 1000 * 60 * 60 * 24 * 7,
+  'day': 1000 * 60 * 60 * 24
+}
+
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
 
 export const useCoreStore = defineStore({
   id: 'core',
@@ -13,7 +25,10 @@ export const useCoreStore = defineStore({
     wallets: [],
     assets: [],
     blockchains: [],
-    history: [],
+    history: {
+      balances: [],
+      timestamps: []
+    },
     history_settings: localStorage.history_settings || 'week',
     providers: [],
     nfts: {
@@ -64,15 +79,9 @@ export const useCoreStore = defineStore({
       this.loadHistory()
     },
     async loadHistory() {
-      const relatives = {
-        'all': Date.now(),
-        'month': 1000 * 60 * 60 * 24 * 30,
-        'week': 1000 * 60 * 60 * 24 * 7,
-        'day': 1000 * 60 * 60 * 24
-      }
       const params = {
         'format': 'json',
-        'start_timestamp': Date.now() - relatives[this.history_settings]
+        'start_timestamp': Date.now() - RELATIVES[this.history_settings]
       }
       http.get(`history/`, { params: params }).then((response) => this.history = response.data)
     },
@@ -112,8 +121,21 @@ export const useCoreStore = defineStore({
         this.nfts.pagination.current += 1
         this.nfts.last_search = this.nfts.search
       })
-
     },
+    clearOldDataOnChart() {
+      const startTimestamp = Date.now() - RELATIVES[this.history_settings]
+      // this.history.timestamps.forEach((timestamp)=>{
+      //   //console.log(timestamp)
+      // //   if (timestamp < startTimestamp)
+      // //     this.history.balances
+      // // })
+
+      this.history.timestamps = this.history.timestamps.filter((value, index) => {
+        if (value < startTimestamp)
+          this.history.balances.remove(index)
+        return value > startTimestamp
+      })
+    }
   },
   getters: {
     getAssetsBalance(state) {
@@ -134,7 +156,15 @@ export const useCoreStore = defineStore({
       return assets
     },
     getTotalBalance(state) {
-      return this.getAssetsBalance.reduce((sum, current) => sum + current.last_price * current.balance_with_decimals, 0)
+      const totalBalance = this.getAssetsBalance.reduce((sum, current) => sum + current.last_price * current.balance_with_decimals, 0)
+      // Add total balance to chart
+      if (totalBalance && state.history.balances[state.history.balances.length-1] != totalBalance)
+      {
+        state.clearOldDataOnChart()
+        state.history.balances.push(totalBalance)
+        state.history.timestamps.push(new Date().getTime())
+      }
+      return totalBalance
     },
     getDistributionData(state) {
       const labels = state.getAssetsBalance.map((el) => el.name)
