@@ -56,7 +56,7 @@ export default defineComponent({
           label: "Total balance in USD",
           borderColor: "rgb(75, 192, 192)",
           fill: true,
-          tension: 1,
+          tension: 0.1,
         },
       ],
     }));
