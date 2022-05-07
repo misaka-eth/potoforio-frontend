@@ -124,11 +124,6 @@ export const useCoreStore = defineStore({
     },
     clearOldDataOnChart() {
       const startTimestamp = Date.now() - RELATIVES[this.history_settings]
-      // this.history.timestamps.forEach((timestamp)=>{
-      //   //console.log(timestamp)
-      // //   if (timestamp < startTimestamp)
-      // //     this.history.balances
-      // // })
 
       this.history.timestamps = this.history.timestamps.filter((value, index) => {
         if (value < startTimestamp)
@@ -153,6 +148,8 @@ export const useCoreStore = defineStore({
 
       assets = Object.values(assets)
       assets.sort((a, b) => (b.last_price * b.balance_with_decimals) - (a.last_price * a.balance_with_decimals));
+      const hide_limit = localStorage.hide_limit || 10
+      assets.map(asset => asset['show'] = ((asset.last_price * asset.balance_with_decimals) > hide_limit))
       return assets
     },
     getTotalBalance(state) {

@@ -7,6 +7,7 @@ import Assets from "@/views/Assets.vue";
 import Blockchains from "@/views/Blockchains.vue";
 import Providers from "@/views/Providers.vue";
 import NFTs from "@/views/NFTs.vue";
+import Settings from "@/views/Settings.vue";
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: '/NFTs',
     name: "NFTs",
     component: NFTs
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings
   }
 ];
 

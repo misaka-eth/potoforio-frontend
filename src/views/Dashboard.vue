@@ -22,7 +22,7 @@ const coreStore = useCoreStore();
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="asset in coreStore.getAssetsBalance" :key="asset.id">
+                <tr v-for="asset in coreStore.getAssetsBalance" :key="asset.id" v-show="asset.show">
                   <td>{{ asset.name }}</td>
                   <td>{{ asset.last_price }}$</td>
                   <td>

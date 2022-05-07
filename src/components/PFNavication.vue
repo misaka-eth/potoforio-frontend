@@ -37,6 +37,12 @@
         value="providers"
         :to="{ path: '/providers' }"
       ></v-list-item>
+      <v-list-item
+        prepend-icon="mdi-cog-outline"
+        title="Settings"
+        value="settings"
+        :to="{ path: '/settings' }"
+      ></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
