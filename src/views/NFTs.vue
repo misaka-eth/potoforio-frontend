@@ -41,7 +41,7 @@ window.onscroll = () => {
         <v-col v-for="nft in coreStore.nfts.data" :key="nft.id" sm="6" lg="2">
           <v-card>
             <v-card-title>
-              {{ nft.name }}
+              <span class="overme">{{ nft.name }}</span>
               <v-spacer />
               <a
                 style="font-size: 14px"
@@ -56,7 +56,7 @@ window.onscroll = () => {
                 <v-icon>mdi-open-in-new</v-icon>
               </a>
             </v-card-title>
-            <v-card-subtitle>{{ nft.token_id }}</v-card-subtitle>
+            <v-card-subtitle><span class="overme">{{ nft.token_id }}</span></v-card-subtitle>
             <v-img
               :aspect-ratio="1 / 1"
               :src="nft.image_url"
@@ -122,4 +122,10 @@ a {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+ .overme {
+    overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+ }
 </style>
