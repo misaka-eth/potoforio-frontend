@@ -16,7 +16,7 @@ const coreStore = useCoreStore();
               <thead>
                 <tr>
                   <th class="text-left">Name</th>
-                  <th class="text-left">Price</th>
+                  <th class="text-left">Price (24h change)</th>
                   <th class="text-left">Balance</th>
                   <th class="text-left">Value</th>
                 </tr>
@@ -24,7 +24,7 @@ const coreStore = useCoreStore();
               <tbody>
                 <tr v-for="asset in coreStore.getAssetsBalance" :key="asset.id" v-show="asset.show">
                   <td>{{ asset.name }}</td>
-                  <td>{{ asset.last_price }}$</td>
+                  <td>{{ asset.last_price }}$ <span style="font-size: 10px">({{ (asset.price_24h_change*asset.last_price/100).toFixed(2) }}$)</span></td>
                   <td>
                     {{ Number(asset.balance_with_decimals.toFixed(4)) }}
                     {{ asset.ticker }}
