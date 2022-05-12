@@ -66,10 +66,10 @@ const coreStore = useCoreStore();
           <PFHistoryChart />
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="coreStore.setHistorySetting('all')" :color="coreStore.history_settings=='all' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='all'" border>All time</v-btn>
-          <v-btn @click="coreStore.setHistorySetting('month')" :color="coreStore.history_settings=='month' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='month'" border>Last month</v-btn>
-          <v-btn @click="coreStore.setHistorySetting('week')" :color="coreStore.history_settings=='week' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='week'" border>Last week</v-btn>
-          <v-btn @click="coreStore.setHistorySetting('day')" :color="coreStore.history_settings=='day' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='day'" border>Last day</v-btn>
+          <v-btn @click="coreStore.setHistorySetting('all')" :color="coreStore.history_settings=='all' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='all'" border>All</v-btn>
+          <v-btn @click="coreStore.setHistorySetting('month')" :color="coreStore.history_settings=='month' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='month'" border>30d</v-btn>
+          <v-btn @click="coreStore.setHistorySetting('week')" :color="coreStore.history_settings=='week' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='week'" border>7d</v-btn>
+          <v-btn @click="coreStore.setHistorySetting('day')" :color="coreStore.history_settings=='day' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='day'" border>1d</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>

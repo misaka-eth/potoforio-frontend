@@ -43,7 +43,8 @@ export const useCoreStore = defineStore({
       search: "",
       last_search: ""
     },
-    totalBalance: 0
+    totalBalance: 0,
+    navigation: true
   }),
   actions: {
     async loadWallets() {

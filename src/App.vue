@@ -11,11 +11,16 @@ onMounted(() => {
   // TODO: remove on unmount
   let walletLoaderInterval = setInterval(() => coreStore.loadWallets(), 5000);
 });
+
+function toggleNavigationPanel() {
+  coreStore.navigation = ! coreStore.navigation;
+}
 </script>
 
 <template>
   <v-app>
     <v-app-bar>
+      <v-app-bar-nav-icon variant="text" @click.stop="toggleNavigationPanel"></v-app-bar-nav-icon>
       <div class="logo">
         <v-icon>mdi-chart-donut</v-icon>
         <div class="logo-text">Potoforio</div>

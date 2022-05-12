@@ -1,5 +1,24 @@
+<script setup>
+import { useCoreStore } from "@/stores/core";
+import { ref } from "@vue/reactivity";
+import { computed } from "@vue/runtime-core";
+const coreStore = useCoreStore();
+
+const size = ref(window.innerWidth);
+
+window.addEventListener('resize', function() {
+	size.value = window.innerWidth;
+});
+
+
+const is_rail = computed(() => {
+  return size.value > 600
+})
+
+</script>
+
 <template>
-  <v-navigation-drawer expand-on-hover rail floating permanent>
+  <v-navigation-drawer expand-on-hover floating :rail="is_rail" rail-width="56" v-model="coreStore.navigation">
     <v-list nav>
       <v-list-item
         prepend-icon="mdi-view-dashboard"
