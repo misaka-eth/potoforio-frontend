@@ -122,10 +122,4 @@ a {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
-
- .overme {
-    overflow:hidden; 
-    white-space:nowrap; 
-    text-overflow: ellipsis;
- }
 </style>

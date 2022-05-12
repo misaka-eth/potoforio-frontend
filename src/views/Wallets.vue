@@ -1,5 +1,7 @@
 <script setup>
 import { useCoreStore } from "@/stores/core";
+import { ref } from "vue";
+
 const coreStore = useCoreStore();
 
 function calcBalance(assets_on_blockchain) {
@@ -12,9 +14,28 @@ function calcBalance(assets_on_blockchain) {
 async function deleteWallet(walletId) {
   coreStore.delWallet(walletId).then((result) => coreStore.loadWallets());
 }
+
+const snackbar = ref(false);
+const snackbar_text = ref("");
+let timeout = null;
+
+function copyToClipBoard(textToCopy) {
+  if (timeout) clearTimeout(timeout);
+  navigator.clipboard.writeText(textToCopy);
+  snackbar.value = true;
+  snackbar_text.value = "Copyed!";
+
+  timeout = setTimeout(() => {
+    snackbar.value = false;
+  }, 1000);
+}
 </script>
 
 <template>
+  <v-snackbar v-model="snackbar" color="primary">
+    {{ snackbar_text }}
+  </v-snackbar>
+
   <v-row>
     <v-col>
       <v-card>
@@ -39,7 +60,13 @@ async function deleteWallet(walletId) {
             ><v-icon size="18px">mdi-circle-edit-outline</v-icon></router-link
           >
         </v-card-title>
-        <v-card-subtitle>{{ wallet.address }}</v-card-subtitle>
+        <v-card-subtitle
+          ><a class="overme" @click.stop="copyToClipBoard(wallet.address)"
+            ><v-icon size="16px" style="margin-right: 4px"
+              >mdi-clipboard-text-outline</v-icon
+            >{{ wallet.address }}</a
+          ></v-card-subtitle
+        >
         <v-card-text>
           <v-table>
             <template v-slot:default>
@@ -55,7 +82,8 @@ async function deleteWallet(walletId) {
               <tbody>
                 <tr
                   v-for="assets_on_blockchain in wallet.assets_on_blockchains"
-                  :key="assets_on_blockchain.id" v-show="calcBalance(assets_on_blockchain)>0"
+                  :key="assets_on_blockchain.id"
+                  v-show="calcBalance(assets_on_blockchain) > 0"
                 >
                   <td
                     v-if="
@@ -141,7 +169,6 @@ a {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */

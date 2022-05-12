@@ -13,14 +13,17 @@ onMounted(() => {
 });
 
 function toggleNavigationPanel() {
-  coreStore.navigation = ! coreStore.navigation;
+  coreStore.navigation = !coreStore.navigation;
 }
 </script>
 
 <template>
   <v-app>
     <v-app-bar>
-      <v-app-bar-nav-icon variant="text" @click.stop="toggleNavigationPanel"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        variant="text"
+        @click.stop="toggleNavigationPanel"
+      ></v-app-bar-nav-icon>
       <div class="logo">
         <v-icon>mdi-chart-donut</v-icon>
         <div class="logo-text">Potoforio</div>
@@ -63,5 +66,11 @@ a {
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
+}
+
+.overme {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>
