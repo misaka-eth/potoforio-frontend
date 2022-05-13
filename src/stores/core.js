@@ -13,11 +13,25 @@ const RELATIVES = {
   'day': 1000 * 60 * 60 * 24
 }
 
-Array.prototype.remove = function(from, to) {
+Array.prototype.remove = function (from, to) {
   var rest = this.slice((to || from) + 1 || this.length);
   this.length = from < 0 ? this.length + from : from;
   return this.push.apply(this, rest);
 };
+
+export const DEFAULT_NFT_STATE =  {
+  data: [],
+  statistic: {
+    count: 0
+  },
+  pagination: {
+    current: 0,
+    size: 50
+  },
+  search: "",
+  last_search: "",
+  isLoading: true,
+}
 
 export const useCoreStore = defineStore({
   id: 'core',
@@ -31,18 +45,7 @@ export const useCoreStore = defineStore({
     },
     history_settings: localStorage.history_settings || 'week',
     providers: [],
-    nfts: {
-      data: [],
-      statistic: {
-        count: 0
-      },
-      pagination: {
-        current: 0,
-        size: 50
-      },
-      search: "",
-      last_search: ""
-    },
+    nfts: {...DEFAULT_NFT_STATE},
     totalBalance: 0,
     navigation: true
   }),
@@ -104,9 +107,12 @@ export const useCoreStore = defineStore({
       http.get(`providers/?format=json`).then((response) => this.providers = response.data)
     },
     async loadNFTs() {
+      const currentSearch = this.nfts.search;
+      this.nfts.isLoading = true;
       // Remove current list if it's new search
       if (this.nfts.last_search != this.nfts.search) {
         this.nfts.pagination.current = 0
+        this.nfts.statistic.count = 0
         this.nfts.data = []
       }
 
@@ -117,10 +123,14 @@ export const useCoreStore = defineStore({
           search: this.nfts.search
         }
       }).then((response) => {
-        this.nfts.data = this.nfts.data.concat(response.data.results)
-        this.nfts.statistic.count = response.data.count
-        this.nfts.pagination.current += 1
-        this.nfts.last_search = this.nfts.search
+        if (currentSearch == this.nfts.search) // Drop old requests
+        {
+          this.nfts.data = this.nfts.data.concat(response.data.results)
+          this.nfts.statistic.count = response.data.count
+          this.nfts.pagination.current += 1
+          this.nfts.last_search = this.nfts.search
+          this.nfts.isLoading = false;
+        }
       })
     },
     clearOldDataOnChart() {
@@ -156,8 +166,7 @@ export const useCoreStore = defineStore({
     getTotalBalance(state) {
       const totalBalance = this.getAssetsBalance.reduce((sum, current) => sum + current.last_price * current.balance_with_decimals, 0)
       // Add total balance to chart
-      if (totalBalance && state.history.balances[state.history.balances.length-1] != totalBalance)
-      {
+      if (totalBalance && state.history.balances[state.history.balances.length - 1] != totalBalance) {
         state.clearOldDataOnChart()
         state.history.balances.push(totalBalance)
         state.history.timestamps.push(new Date().getTime())

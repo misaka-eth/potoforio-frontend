@@ -1,6 +1,6 @@
 <script setup>
-import { useCoreStore } from "@/stores/core";
-import { onMounted } from "vue";
+import { useCoreStore, DEFAULT_NFT_STATE } from "@/stores/core";
+import { onMounted, onUnmounted } from "vue";
 
 const coreStore = useCoreStore();
 
@@ -8,12 +8,19 @@ onMounted(() => {
   coreStore.loadNFTs();
 });
 
+onUnmounted(() => {
+  coreStore.nfts = { ...DEFAULT_NFT_STATE };
+});
+
 window.onscroll = () => {
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight ===
     document.documentElement.offsetHeight;
 
-  if (bottomOfWindow) {
+  const isMoreToLoad =
+    coreStore.nfts.statistic.count / coreStore.nfts.pagination.size >
+    coreStore.nfts.pagination.current;
+  if (bottomOfWindow && !coreStore.nfts.isLoading && isMoreToLoad) {
     coreStore.loadNFTs();
   }
 };
@@ -29,7 +36,7 @@ window.onscroll = () => {
               <v-text-field
                 label="Search (name, token id, blockchain)"
                 v-model="coreStore.nfts.search"
-                @keyup="coreStore.loadNFTs"
+                @input="coreStore.loadNFTs()"
               ></v-text-field>
               Loaded {{ coreStore.nfts.data.length }} of
               {{ coreStore.nfts.statistic.count }}
@@ -37,7 +44,7 @@ window.onscroll = () => {
           </v-card>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="coreStore.nfts.data.length > 0 || coreStore.nfts.isLoading">
         <v-col v-for="nft in coreStore.nfts.data" :key="nft.id" sm="6" lg="2">
           <v-card>
             <v-card-title>
@@ -56,7 +63,9 @@ window.onscroll = () => {
                 <v-icon>mdi-open-in-new</v-icon>
               </a>
             </v-card-title>
-            <v-card-subtitle><span class="overme">{{ nft.token_id }}</span></v-card-subtitle>
+            <v-card-subtitle
+              ><span class="overme">{{ nft.token_id }}</span></v-card-subtitle
+            >
             <v-img
               :aspect-ratio="1 / 1"
               :src="nft.image_url"
@@ -80,46 +89,34 @@ window.onscroll = () => {
               </v-layout>
             </v-img>
           </v-card>
+          <v-card></v-card>
+        </v-col>
+        <v-col sm="6" lg="2" v-show="coreStore.nfts.isLoading">
+          <v-card>
+            <v-card-text>
+              <div class="text-center">
+                <v-progress-circular
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+                <span style="padding: 10px">Loading</span>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col>
+          <v-card>
+            <v-card-text v-if="coreStore.nfts.search == ''"
+              >You cunnently doesn't have any NFT</v-card-text
+            >
+            <v-card-text v-else
+              >Can't find any NFT with this request</v-card-text
+            >
+          </v-card>
         </v-col>
       </v-row>
     </v-col>
   </v-row>
 </template>
-
-<style scoped>
-.streach {
-  width: 50%;
-}
-
-a {
-  color: rgb(var(--v-theme-on-background));
-  text-decoration: none;
-}
-
-/* Tooltip container */
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 200px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 0;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-</style>
