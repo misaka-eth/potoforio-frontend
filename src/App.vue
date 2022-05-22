@@ -9,11 +9,15 @@ const coreStore = useCoreStore();
 onMounted(() => {
   coreStore.loadWallets();
   // TODO: remove on unmount
-  let walletLoaderInterval = setInterval(() => coreStore.loadWallets(), 5000);
+  let walletLoaderInterval = setInterval(() => {coreStore.loadWallets()}, 5000);
 });
 
 function toggleNavigationPanel() {
   coreStore.navigation = !coreStore.navigation;
+}
+
+function updateCurrenySetting() {
+  localStorage.currency_settings = coreStore.currency
 }
 </script>
 
@@ -28,6 +32,16 @@ function toggleNavigationPanel() {
         <v-icon>mdi-chart-donut</v-icon>
         <div class="logo-text">Potoforio</div>
       </div>
+      <template v-slot:append>
+        <div style="margin-top: 36px;">
+        <v-select
+          :items="coreStore.currencyes"
+          v-model="coreStore.currency"
+          label="Currency"
+          :transition="{}"
+          @update:model-value="updateCurrenySetting"
+        /></div>
+      </template>
     </v-app-bar>
     <PFNavication />
     <v-main>

@@ -19,7 +19,7 @@ Array.prototype.remove = function (from, to) {
   return this.push.apply(this, rest);
 };
 
-export const DEFAULT_NFT_STATE =  {
+export const DEFAULT_NFT_STATE = {
   data: [],
   statistic: {
     count: 0
@@ -33,6 +33,28 @@ export const DEFAULT_NFT_STATE =  {
   isLoading: true,
 }
 
+const DEFAULT_CURRENCY_STATE = [{
+  title: "USD",
+  value: "USD",
+  multiplier: 1,
+  postfix: "$",
+  decimals: 2
+},
+{
+  title: "UAH",
+  value: "UAH",
+  multiplier: 36,
+  postfix: " UAH",
+  decimals: 2
+},
+{
+  title: "RUB",
+  value: "RUB",
+  multiplier: 65,
+  postfix: " RUB",
+  decimals: 2
+}]
+
 export const useCoreStore = defineStore({
   id: 'core',
   state: () => ({
@@ -45,13 +67,19 @@ export const useCoreStore = defineStore({
     },
     history_settings: localStorage.history_settings || 'week',
     providers: [],
-    nfts: {...DEFAULT_NFT_STATE},
+    nfts: { ...DEFAULT_NFT_STATE },
     totalBalance: 0,
-    navigation: true
+    navigation: true,
+    currencyes: DEFAULT_CURRENCY_STATE,
+    currency: localStorage.currency_settings || 'USD',
   }),
   actions: {
     async loadWallets() {
-      http.get('wallet/').then((response) => this.wallets = response.data).catch((err) => console.log(err))
+      http.get('wallet/').then((response) => {
+        this.wallets = response.data
+        // Call getAssetsBalance to calculate currencyes
+        this.getAssetsBalance() 
+      }).catch((err) => console.log(err))
     },
     async addWallet(name, address) {
       return await http.post('wallet/', {
@@ -161,6 +189,14 @@ export const useCoreStore = defineStore({
       assets.sort((a, b) => (b.last_price * b.balance_with_decimals) - (a.last_price * a.balance_with_decimals));
       const hide_limit = localStorage.hide_limit || 10
       assets.map(asset => asset['show'] = ((asset.last_price * asset.balance_with_decimals) > hide_limit))
+
+      // Save current asset as base currency
+      const labels = assets.map((el) => {
+        return { title: el.name, value: el.name, postfix: ' ' + el.ticker, multiplier: 1 / el.last_price, decimals: 4 }
+      })
+      state.currencyes = [...DEFAULT_CURRENCY_STATE, ...labels]
+      //
+
       return assets
     },
     getTotalBalance(state) {
@@ -180,15 +216,10 @@ export const useCoreStore = defineStore({
       );
       return { labels, data }
     },
-    getNFTCategories(state) {
-      let categories = {};
-      state.nfts.forEach((nft) => {
-        categories[nft.category.category_id] = categories[nft.category.category_id] || nft.category
-        categories[nft.category.category_id]['count'] = categories[nft.category.category_id]['count'] || 0
-        categories[nft.category.category_id]['count'] += 1
-      })
-      categories = Object.values(categories)
-      return categories
+    getCurrency(state) {
+      return state.currencyes.filter(
+        (el) => el.value === state.currency
+      )[0];
     }
   }
 })

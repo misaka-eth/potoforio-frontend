@@ -140,10 +140,11 @@ function copyToClipBoard(textToCopy) {
                         (
                           calcBalance(assets_on_blockchain) *
                           assets_on_blockchain.asset_on_blockchain.asset
-                            .last_price
-                        ).toFixed(2)
+                            .last_price *
+                          coreStore.getCurrency.multiplier
+                        ).toFixed(coreStore.getCurrency.decimals)
                       )
-                    }}$
+                    }}{{coreStore.getCurrency.postfix}}
                   </td>
                 </tr>
               </tbody>

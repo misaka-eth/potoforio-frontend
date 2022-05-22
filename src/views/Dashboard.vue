@@ -22,21 +22,35 @@ const coreStore = useCoreStore();
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="asset in coreStore.getAssetsBalance" :key="asset.id" v-show="asset.show">
+                <tr
+                  v-for="asset in coreStore.getAssetsBalance"
+                  :key="asset.id"
+                  v-show="asset.show"
+                >
                   <td>{{ asset.name }}</td>
-                  <td>{{ asset.last_price }}$ <span style="font-size: 10px">({{ (asset.price_24h_change*asset.last_price/100).toFixed(2) }}$)</span></td>
+                  <td>
+                    {{ asset.last_price }}$
+                    <span style="font-size: 10px"
+                      >({{
+                        (
+                          (asset.price_24h_change * asset.last_price) /
+                          100
+                        ).toFixed(2)
+                      }}$)</span
+                    >
+                  </td>
                   <td>
                     {{ Number(asset.balance_with_decimals.toFixed(4)) }}
                     {{ asset.ticker }}
                   </td>
                   <td>
                     {{
-                      Number(
-                        (
-                          asset.balance_with_decimals * asset.last_price
-                        ).toFixed(2)
-                      )
-                    }}$
+                      (
+                        asset.balance_with_decimals *
+                        asset.last_price *
+                        coreStore.getCurrency.multiplier
+                      ).toFixed(coreStore.getCurrency.decimals)
+                    }}{{ coreStore.getCurrency.postfix }}
                   </td>
                 </tr>
                 <tr>
@@ -49,7 +63,15 @@ const coreStore = useCoreStore();
                   <td>Total balance</td>
                   <td></td>
                   <td></td>
-                  <td>{{ Number(coreStore.getTotalBalance.toFixed(2)) }}$</td>
+                  <td>
+                    {{
+                      Number(
+                        (coreStore.getTotalBalance * coreStore.getCurrency.multiplier).toFixed(
+                          coreStore.getCurrency.decimals
+                        )
+                      )
+                    }}{{ coreStore.getCurrency.postfix }}
+                  </td>
                 </tr>
               </tbody>
             </template>
@@ -66,10 +88,42 @@ const coreStore = useCoreStore();
           <PFHistoryChart />
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="coreStore.setHistorySetting('all')" :color="coreStore.history_settings=='all' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='all'" border>All</v-btn>
-          <v-btn @click="coreStore.setHistorySetting('month')" :color="coreStore.history_settings=='month' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='month'" border>30d</v-btn>
-          <v-btn @click="coreStore.setHistorySetting('week')" :color="coreStore.history_settings=='week' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='week'" border>7d</v-btn>
-          <v-btn @click="coreStore.setHistorySetting('day')" :color="coreStore.history_settings=='day' ? 'secondary' : 'primary'" :disabled="coreStore.history_settings=='day'" border>1d</v-btn>
+          <v-btn
+            @click="coreStore.setHistorySetting('all')"
+            :color="
+              coreStore.history_settings == 'all' ? 'secondary' : 'primary'
+            "
+            :disabled="coreStore.history_settings == 'all'"
+            border
+            >All</v-btn
+          >
+          <v-btn
+            @click="coreStore.setHistorySetting('month')"
+            :color="
+              coreStore.history_settings == 'month' ? 'secondary' : 'primary'
+            "
+            :disabled="coreStore.history_settings == 'month'"
+            border
+            >30d</v-btn
+          >
+          <v-btn
+            @click="coreStore.setHistorySetting('week')"
+            :color="
+              coreStore.history_settings == 'week' ? 'secondary' : 'primary'
+            "
+            :disabled="coreStore.history_settings == 'week'"
+            border
+            >7d</v-btn
+          >
+          <v-btn
+            @click="coreStore.setHistorySetting('day')"
+            :color="
+              coreStore.history_settings == 'day' ? 'secondary' : 'primary'
+            "
+            :disabled="coreStore.history_settings == 'day'"
+            border
+            >1d</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-col>
