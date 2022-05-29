@@ -108,6 +108,7 @@ export const useCoreStore = defineStore({
       this.loadHistory()
     },
     async loadHistory() {
+      this.history = [] // Clear old data manualy to force chart update, in other way chart loading took to long
       const params = {
         'format': 'json',
         'start_timestamp': Date.now() - RELATIVES[this.history_settings]
