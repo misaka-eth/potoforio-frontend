@@ -7,6 +7,8 @@ import { createPinia } from 'pinia'
 
 loadFonts()
 
+import {VueHighcharts} from 'vue3-highcharts';
+
 createApp(App)
-  .use(vuetify).use(router).use(createPinia())
+  .use(vuetify).use(router).use(createPinia()).use(VueHighcharts)
   .mount('#app')

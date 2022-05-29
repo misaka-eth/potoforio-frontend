@@ -61,10 +61,7 @@ export const useCoreStore = defineStore({
     wallets: [],
     assets: [],
     blockchains: [],
-    history: {
-      balances: [],
-      timestamps: []
-    },
+    history: [],
     history_settings: localStorage.history_settings || 'week',
     providers: [],
     nfts: { ...DEFAULT_NFT_STATE },
@@ -78,7 +75,7 @@ export const useCoreStore = defineStore({
       http.get('wallet/').then((response) => {
         this.wallets = response.data
         // Call getAssetsBalance to calculate currencyes
-        this.getAssetsBalance() 
+        this.getAssetsBalance
       }).catch((err) => console.log(err))
     },
     async addWallet(name, address) {
@@ -120,14 +117,13 @@ export const useCoreStore = defineStore({
     async updateHistory() {
       if (!this.history) return this.loadHistory()
 
-      const start_timestamp = this.history.timestamps[this.history.timestamps.length - 1]
+      const start_timestamp = this.history[this.history.length - 1][0]
       const params = {
         'format': 'json',
         'start_timestamp': start_timestamp
       }
       http.get(`history/`, { params: params }).then((response) => {
-        this.history.balances = this.history.balances.concat(response.data.balances.slice(1))
-        this.history.timestamps = this.history.timestamps.concat(response.data.timestamps.slice(1))
+        this.history = this.history.concat(response.data.slice(1))
       })
 
     },
@@ -160,15 +156,6 @@ export const useCoreStore = defineStore({
           this.nfts.isLoading = false;
         }
       })
-    },
-    clearOldDataOnChart() {
-      const startTimestamp = Date.now() - RELATIVES[this.history_settings]
-
-      this.history.timestamps = this.history.timestamps.filter((value, index) => {
-        if (value < startTimestamp)
-          this.history.balances.remove(index)
-        return value > startTimestamp
-      })
     }
   },
   getters: {
@@ -200,12 +187,11 @@ export const useCoreStore = defineStore({
       return assets
     },
     getTotalBalance(state) {
-      const totalBalance = this.getAssetsBalance.reduce((sum, current) => sum + current.last_price * current.balance_with_decimals, 0)
+      const totalBalance = Number(this.getAssetsBalance.reduce((sum, current) => sum + current.last_price * current.balance_with_decimals, 0).toFixed(2))
       // Add total balance to chart
-      if (totalBalance && state.history.balances[state.history.balances.length - 1] != totalBalance) {
-        state.clearOldDataOnChart()
-        state.history.balances.push(totalBalance)
-        state.history.timestamps.push(new Date().getTime())
+      const lastRecord = state.history[state.history.length - 1]
+      if (totalBalance && lastRecord && lastRecord[1] != totalBalance) {
+        state.history.push([new Date().getTime(), totalBalance])
       }
       return totalBalance
     },
