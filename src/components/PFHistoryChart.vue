@@ -9,11 +9,8 @@
 </template>
 <script>
 import VueHighcharts from "vue3-highcharts";
-import HighCharts from "highcharts";
-import StockCharts from "highcharts/modules/stock";
 import { useCoreStore } from "@/stores/core";
 import { computed } from "vue";
-StockCharts(HighCharts);
 
 export default {
   name: "StockChart",
