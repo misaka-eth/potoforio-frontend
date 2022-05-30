@@ -4,7 +4,7 @@
     :options="chartData"
     :redrawOnUpdate="true"
     :oneToOneUpdate="false"
-    :animateOnUpdate="true"
+    :animateOnUpdate="false"
   />
 </template>
 <script>
