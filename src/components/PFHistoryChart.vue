@@ -244,12 +244,11 @@ export default {
     });
 
     return {
-      chartData,
+      chartData, coreStore
     };
   },
   mounted: function () {
-    useCoreStore().loadHistory();
-    setInterval(() => useCoreStore().updateHistory(), 5000);
+    this.coreStore.loadHistory();
   },
 };
 </script>

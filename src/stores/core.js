@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 import axios from 'axios'
+import { thisTypeAnnotation } from '@babel/types';
 
 const http = axios.create({
   baseURL: '/api/',
@@ -114,19 +115,6 @@ export const useCoreStore = defineStore({
         'start_timestamp': Date.now() - RELATIVES[this.history_settings]
       }
       http.get(`history/`, { params: params }).then((response) => this.history = response.data)
-    },
-    async updateHistory() {
-      if (!this.history) return this.loadHistory()
-
-      const start_timestamp = this.history[this.history.length - 1][0]
-      const params = {
-        'format': 'json',
-        'start_timestamp': start_timestamp
-      }
-      http.get(`history/`, { params: params }).then((response) => {
-        this.history = this.history.concat(response.data.slice(1))
-      })
-
     },
     async loadProviders() {
       http.get(`providers/?format=json`).then((response) => this.providers = response.data)

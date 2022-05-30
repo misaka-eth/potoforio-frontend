@@ -8,8 +8,13 @@ const coreStore = useCoreStore();
 
 onMounted(() => {
   coreStore.loadWallets();
+
   // TODO: remove on unmount
-  let walletLoaderInterval = setInterval(() => {coreStore.loadWallets()}, 5000);
+  function update() {
+    coreStore.loadWallets()
+    setTimeout(update, 10000)
+  }
+  setTimeout(update, 10000)
 });
 
 function toggleNavigationPanel() {
