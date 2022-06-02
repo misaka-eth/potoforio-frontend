@@ -62,8 +62,7 @@ export const useCoreStore = defineStore({
     wallets: [],
     assets: [],
     blockchains: [],
-    history: [],
-    history_settings: localStorage.history_settings || 'week',
+    history: undefined,
     providers: [],
     nfts: { ...DEFAULT_NFT_STATE },
     totalBalance: 0,
@@ -103,18 +102,8 @@ export const useCoreStore = defineStore({
     async loadBlockchains() {
       http.get(`blockchain/`).then((response) => this.blockchains = response.data)
     },
-    setHistorySetting(setting) {
-      this.history_settings = setting;
-      localStorage.history_settings = setting;
-      this.loadHistory()
-    },
     async loadHistory() {
-      this.history = [] // Clear old data manualy to force chart update, in other way chart loading took to long
-      const params = {
-        'format': 'json',
-        'start_timestamp': Date.now() - RELATIVES[this.history_settings]
-      }
-      http.get(`history/`, { params: params }).then((response) => this.history = response.data)
+      http.get(`history/`).then((response) => this.history = response.data)
     },
     async loadProviders() {
       http.get(`providers/?format=json`).then((response) => this.providers = response.data)
@@ -178,10 +167,14 @@ export const useCoreStore = defineStore({
     getTotalBalance(state) {
       const totalBalance = Number(this.getAssetsBalance.reduce((sum, current) => sum + current.last_price * current.balance_with_decimals, 0).toFixed(2))
       // Add total balance to chart
-      const lastRecord = state.history[state.history.length - 1]
-      if (totalBalance && lastRecord && lastRecord[1] != totalBalance) {
-        state.history.push([new Date().getTime(), totalBalance])
+      if (state.history)
+      {
+        const lastRecord = state.history[state.history.length - 1]
+        if (totalBalance && lastRecord && lastRecord[1] != totalBalance) {
+          state.history.push([new Date().getTime(), totalBalance])
+        }
       }
+
       return totalBalance
     },
     getDistributionData(state) {

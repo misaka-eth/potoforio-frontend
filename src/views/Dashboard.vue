@@ -1,9 +1,16 @@
 <script setup>
 import { useCoreStore } from "@/stores/core";
-import PFHistoryChart from "@/components/PFHistoryChart.vue";
+import { onMounted } from 'vue'
+
 import PFDistributionChart from "@/components/PFDistributionChart.vue";
+import PChartHistory from "../components/PChartHistory.vue";
 
 const coreStore = useCoreStore();
+
+onMounted(() => {
+  coreStore.loadHistory();
+});
+
 </script>
 
 <template>
@@ -85,46 +92,8 @@ const coreStore = useCoreStore();
       <v-card>
         <v-card-title>Balance history</v-card-title>
         <v-card-text>
-          <PFHistoryChart />
+          <PChartHistory :chartData="coreStore.history" :chartName="'Total balance, USD'"/>
         </v-card-text>
-        <v-card-actions>
-          <v-btn
-            @click="coreStore.setHistorySetting('all')"
-            :color="
-              coreStore.history_settings == 'all' ? 'secondary' : 'primary'
-            "
-            :disabled="coreStore.history_settings == 'all'"
-            border
-            >All</v-btn
-          >
-          <v-btn
-            @click="coreStore.setHistorySetting('month')"
-            :color="
-              coreStore.history_settings == 'month' ? 'secondary' : 'primary'
-            "
-            :disabled="coreStore.history_settings == 'month'"
-            border
-            >30d</v-btn
-          >
-          <v-btn
-            @click="coreStore.setHistorySetting('week')"
-            :color="
-              coreStore.history_settings == 'week' ? 'secondary' : 'primary'
-            "
-            :disabled="coreStore.history_settings == 'week'"
-            border
-            >7d</v-btn
-          >
-          <v-btn
-            @click="coreStore.setHistorySetting('day')"
-            :color="
-              coreStore.history_settings == 'day' ? 'secondary' : 'primary'
-            "
-            :disabled="coreStore.history_settings == 'day'"
-            border
-            >1d</v-btn
-          >
-        </v-card-actions>
       </v-card>
     </v-col>
     <v-col md="3" sm="12" xs="12">
