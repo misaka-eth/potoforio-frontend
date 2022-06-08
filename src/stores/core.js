@@ -64,7 +64,7 @@ export const useCoreStore = defineStore({
     blockchains: [],
     history: undefined,
     providers: [],
-    nfts: { ...DEFAULT_NFT_STATE },
+    nfts: JSON.parse(JSON.stringify(DEFAULT_NFT_STATE)),
     totalBalance: 0,
     navigation: true,
     currencyes: DEFAULT_CURRENCY_STATE,
